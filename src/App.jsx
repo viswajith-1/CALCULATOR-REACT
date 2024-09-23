@@ -3,6 +3,7 @@ import Wrapper from './assets/wrapper'
 import Screen from './assets/screen'
 import Button from './assets/button'
 import ButtonBox from './assets/buttonBox'
+import CalcProvider from './assets/CalcContext'
 
 const btnValues = [
   ['C',"+-","%","/"],
@@ -14,7 +15,7 @@ const btnValues = [
 
 function App() {
   return (
-    <div>      
+    <CalcProvider>      
       <Wrapper>
         <Screen/>
         <ButtonBox>
@@ -26,7 +27,7 @@ function App() {
           ))}
         </ButtonBox>
       </Wrapper>   
-    </div>
+    </CalcProvider>
   )
 }
 
