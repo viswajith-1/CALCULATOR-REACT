@@ -14,13 +14,13 @@ const getStyleName = btn => {
 
 const Button = ({ value }) => {
 
-  const { setCalc } =useContext(CalcContext);
+  const { calc, setCalc } =useContext(CalcContext);
   console.log(setCalc);
 
   const commaClick = () => {
     setCalc({
       ...calc,
-      num: !calc.num.toString().includes ? calc.num + value : calc.num
+      num: !calc.num.toString().includes('.') ? calc.num + value : calc.num
     })
   }
 
@@ -43,11 +43,62 @@ const Button = ({ value }) => {
     })
   }
 
+  const signClick = () => {
+    setCalc({
+      sign: value,
+      res: !calc.res && calc.num ? calc.num : calc.res,
+      num: 0
+    })
+  }
+
+  const equalsClick = () => {
+    
+    if(calc.res && calc.num){
+      const math = (a,b, sign) => {
+        const result = {
+          '+': (a,b) => a+b,
+          '-': (a,b) => a-b,
+          'x': (a,b) => a*b,
+          '/': (a,b) => a/b,
+        }
+        return result[sign](a, b);
+      }
+      setCalc({
+        res: math(calc.res, calc.num, calc.sign),
+        sign: '',
+        num: 0
+      })
+    }
+  }
+
+  const percentClick = () => {
+    setCalc({
+      num: (calc.num/100),
+      res: (calc.res/100),
+      sign: ''
+    })
+  }
+
+  const invertClick = () => {
+    setCalc({
+      num: calc.num ? calc.num * -1: 0,
+      res: calc.res ? calc.num * -1: 0,
+      sign: ''
+    })
+  }
+
   const handleBtnClick= () => {
     console.log(value)
     const results ={
       '.': commaClick,
-      'C': resetClick
+      'C': resetClick,
+      '/': signClick,
+      'x': signClick,
+      '-': signClick,
+      '+': signClick,
+      '=': equalsClick,
+      '%': percentClick,
+      '+-':invertClick
     }
     if(results[value]){
       return results[value]()
